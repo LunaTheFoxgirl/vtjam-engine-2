@@ -14,8 +14,6 @@ public import engine.net;
 public import engine.ui;
 public import engine.game;
 public import engine.i18n;
-public import engine.scripting;
-public import engine.gct;
 public import engine.pak;
 
 import bindbc.sdl;
@@ -65,11 +63,6 @@ void initEngine() {
 
     // Initialize subsystems
     AppLog.info("Engine", "Intialized internal state for renderer...");
-    LuaSupport support = initScripting();
-    enforce(support != LuaSupport.noLibrary, "Failed to initialize scripting engine, Lua not found.");
-    enforce(support != LuaSupport.badLibrary, "Failed to initialize scripting engine, incompatible Lua version.");
-    initGCT();
-    AppLog.info("Engine", "Scripting engine initialized...");
 
     // Initialize pak reader
     kmPakInit();
