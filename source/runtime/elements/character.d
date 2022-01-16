@@ -35,5 +35,10 @@ public:
     /**
         Offset to apply when someone is talking
     */
-    float yOffset;
+    float yOffset = 0;
+
+    /**
+        Alpha opacity
+    */
+    float alpha = 0;
 }

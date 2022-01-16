@@ -8,6 +8,7 @@ function bootstrap()
     })
     mathilde = define("Mathilde", {neutral="char/mathilde_neutral"})
     karla = define("Karla", {neutral="char/karla_neutral"})
+    mom = define("Mom", {})
 
     start_scene("scene0")
 end

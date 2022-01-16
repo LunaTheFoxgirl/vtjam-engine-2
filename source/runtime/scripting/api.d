@@ -11,7 +11,12 @@ void kmVNRegisterCharacterAPI() {
     kmLuaState.push((string name, string[string] expressions) {
 
         // Set it in the global characters store
-        kmCharacters[name] = Character(name, expressions, expressions["neutral"], false);
+        kmCharacters[name] = Character(
+            name, 
+            expressions, 
+            expressions.length == 0 ? null : expressions["neutral"], 
+            false
+        );
         foreach(expr, path; expressions) {
             GameAtlas.add(
                 path,
@@ -41,6 +46,7 @@ void kmVNRegisterCharacterAPI() {
         t["expr"] = (LuaTable table, string expression) {
             kmCharacters[table.get!string("name")].currentTexture =
                 kmCharacters[table.get!string("name")].expressions[expression];
+            kmCharacters[table.get!string("name")].yOffset = 8f;
         };
 
         t["jump"] = (LuaTable table, float height) { 
@@ -58,10 +64,17 @@ void kmVNRegisterCharacterAPI() {
     });
     kmLuaState.setGlobal("define");
 
-    kmLuaState.push((string dialogue) {
+    kmLuaState.push((LuaState* state, string dialogue) {
         kmText.push("", dialogue);
+        kmLuaYield(state);
     });
     kmLuaState.setGlobal("think");
+
+    kmLuaState.push((LuaState* state, string dialogue, string[] choices) {
+        kmText.pushQuestions(dialogue, choices);
+        kmLuaYield(state);
+    });
+    kmLuaState.setGlobal("choice");
 
     kmLuaState.push((LuaState* state) {
         kmLuaYield(state);
@@ -72,7 +85,7 @@ void kmVNRegisterCharacterAPI() {
 void kmVNRegisterSceneAPI() {
     kmLuaState.register!(
         "bg", (string bg) {
-            kmBackground = new Texture(kmPakGetResource(bg), bg);
+            kmBackground = bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg);
         },
         "cg", (string cg) {
             kmActiveCG = new Texture(kmPakGetResource(cg), cg);

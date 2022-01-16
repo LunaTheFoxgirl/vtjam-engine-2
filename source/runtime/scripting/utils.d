@@ -14,8 +14,8 @@ LuaState* kmLuaCreateThread(LuaState* parent) {
 /**
     Yields Lua thread
 */
-void kmLuaYield(LuaState* state) {
-    int status = lua_yield(state.handle, 0);
+void kmLuaYield(LuaState* state, int args = 0) {
+    int status = lua_yield(state.handle, args);
 }
 
 /**
