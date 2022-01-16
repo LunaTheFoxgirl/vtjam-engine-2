@@ -129,33 +129,28 @@ void kmVNRegisterAudioAPI() {
         
         // Load sound if need be
         if (sfx !in kmLoadedSFX) kmLoadedSFX[sfx] = new Sound(kmPakGetResource(sfx));
-
-        auto t = LuaTable.makeNew(state);
-        t["sfxId"] = sfx;
-        t["looping"] = false;
-
-        t["play"] = (LuaState* state, LuaTable table) {
-            kmLoadedSFX[table.get!string("sfxId")].setLooping(table.get!bool("looping"));
-            kmLoadedSFX[table.get!string("sfxId")].play(0.65f);
-        };
-
-        t["stop"] = (LuaState* state, LuaTable table) {
-            kmLoadedSFX[table.get!string("sfxId")].stop();
-        };
-
-        t["destroy"] = (LuaState* state, LuaTable table) {
-
-            // Remove it from the engine
-            kmLoadedSFX.remove(table.get!string("sfxId"));
-            
-            // Destroy our sound effect in Lua
-            table.push();
-            state.push(null);
-            state.rawSet(-2);
-        };
-        return t;
     });
     kmLuaState.setGlobal("loadSFX");
+
+    kmLuaState.push((LuaState* state, string sfx, bool looping) {
+        
+        kmLoadedSFX[sfx].setLooping(looping);
+        kmLoadedSFX[sfx].play(0.65f);
+    });
+    kmLuaState.setGlobal("playSFX");
+
+    kmLuaState.push((LuaState* state, string sfx) {
+        
+        kmLoadedSFX[sfx].stop();
+    });
+    kmLuaState.setGlobal("stopSFX");
+
+    kmLuaState.push((LuaState* state, string sfx) {
+        
+        // Load sound if need be
+        if (sfx in kmLoadedSFX) kmLoadedSFX.remove(sfx);
+    });
+    kmLuaState.setGlobal("unloadSFX");
 
     kmLuaState.push((LuaState* state, string bgm) {
         if (kmPlayingMusic) kmPlayingMusic.stop();
