@@ -10,6 +10,7 @@ import std.stdio : writefln;
 int main(string[] args) {
 
     if (args.length > 2 && args[1] == "--compile") {
+        if (!exists("kmpak/")) mkdir("kmpak");
         foreach(arg; args[2..$]) {
             PakEntryBinding[] bindings;
 
