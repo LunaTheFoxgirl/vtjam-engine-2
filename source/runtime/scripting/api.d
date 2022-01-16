@@ -112,7 +112,7 @@ void kmVNRegisterAudioAPI() {
 
         t["play"] = (LuaState* state, LuaTable table) {
             kmLoadedSFX[table.get!string("sfxId")].setLooping(table.get!string("looping"));
-            kmLoadedSFX[table.get!string("sfxId")].play();
+            kmLoadedSFX[table.get!string("sfxId")].play(0.5f);
         };
 
         t["stop"] = (LuaState* state, LuaTable table) {
@@ -138,7 +138,7 @@ void kmVNRegisterAudioAPI() {
         if (bgm.length > 0) {
             kmPlayingMusic = new Music(kmPakGetResource(bgm));
             kmPlayingMusic.setLooping(true);
-            kmPlayingMusic.play();
+            kmPlayingMusic.play(0.25f);
         } else kmPlayingMusic = null;
         return t;
     });

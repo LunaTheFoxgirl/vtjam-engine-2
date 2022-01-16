@@ -13,6 +13,7 @@ void kmLuaInit() {
     kmLuaState = new LuaState(luaL_newstate());
     kmVNRegisterCharacterAPI();
     kmVNRegisterSceneAPI();
+    kmVNRegisterAudioAPI();
     kmVNRegisterBootstrap();
 }
 
