@@ -12,6 +12,7 @@ import std.path;
 import std.bitmanip;
 import std.exception;
 import std.format;
+import std.array : replace;
 
 /**
     A binding from a Pak entry to a physical file.
@@ -53,7 +54,7 @@ void kmPakWriteToFile(PakEntryBinding[] bindings, string file) {
         writer.rawWrite(nativeToLittleEndian!uint(cast(uint)binding.virtualPath.length)); // length of path name
 
         // Write path
-        writer.rawWrite(cast(ubyte[])binding.virtualPath);
+        writer.rawWrite(cast(ubyte[])replace(binding.virtualPath, "\\", "/"));
     }
 
     size_t writeStart = writer.tell();
