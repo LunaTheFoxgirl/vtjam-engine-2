@@ -198,7 +198,7 @@ do
 	freja	"...No."
 
 	mom		[["Well, you better soon! It's the best time to find a life partner!"]]
-	think	"My mother and many of t he elders in the town believe that your\n\z
+	think	"My mother and many of the elders in the town believe that your\n\z
 			Gala partner is your fated one for life...\n\z
 			I just think it's unnecessary. Karla would think so too."
 	think 	"She would say that careers are more important than love."
