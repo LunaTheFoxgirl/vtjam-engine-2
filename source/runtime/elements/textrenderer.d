@@ -107,12 +107,12 @@ public:
 
                     case 'w':
                         i += 2;
-                        wave = true;
+                        wave = !wave;
                         break;
 
                     case 's':
                         i += 2;
-                        shake = true;
+                        shake = !shake;
                         break;
                     
                     case 'c':
