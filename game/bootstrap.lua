@@ -11,5 +11,5 @@ function bootstrap()
     mom = define("Mom", {})
     nurse = define("School Nurse", {})
 
-    start_scene("scene0")
+    start_scene("intro")
 end

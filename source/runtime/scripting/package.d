@@ -15,6 +15,7 @@ void kmLuaInit() {
     kmVNRegisterSceneAPI();
     kmVNRegisterAudioAPI();
     kmVNRegisterBootstrap();
+    kmVNRegisterUtilsAPI();
 }
 
 void kmLuaStartGame() {

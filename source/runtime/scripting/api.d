@@ -75,11 +75,6 @@ void kmVNRegisterCharacterAPI() {
         kmLuaYield(state);
     });
     kmLuaState.setGlobal("choice");
-
-    kmLuaState.push((LuaState* state) {
-        kmLuaYield(state);
-    });
-    kmLuaState.setGlobal("yield");
 }
 
 void kmVNRegisterSceneAPI() {
@@ -98,6 +93,20 @@ void kmVNRegisterSceneAPI() {
             kmLuaYield(state);
         }
     )("scene");
+}
+
+void kmVNRegisterUtilsAPI() {
+    kmLuaState.push((LuaState* state) {
+        kmLuaYield(state);
+    });
+    kmLuaState.setGlobal("yield");
+
+    kmLuaState.push((LuaState* state) {
+        // Exit the game
+        GameWindow.close();
+        kmLuaYield(state);
+    });
+    kmLuaState.setGlobal("exit");
 }
 
 void kmVNRegisterAudioAPI() {

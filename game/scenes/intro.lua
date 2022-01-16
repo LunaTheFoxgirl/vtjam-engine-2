@@ -10,7 +10,7 @@
 	think	"Sorry about that. I hope you will enjoy this taste\n\z
 			Of what we wanted to make nontheless\n\z
 			- Luna and Nethyr_UX"
-	think "..."	 
+	think 	"..."	 
 
 	think   "At a certain age, young boys and girls prepare for a special event:\n\z
             the High School Gala.\n\z
@@ -27,11 +27,17 @@
 do
     -- scene.bg "bgs/bedroom"
 	-- Starts with Alarm SFX
+
+	-- TODO: Add sound effect in to game/sfx/alarm and uncomment alarm playback code.
+	-- local alarm = loadSFX("sfx/alarm")
+	-- alarm.looping = true
 	
 	freja:show()
 	freja:move(1)
 
+	-- alarm:play()
 	freja [["MMm... I hate alarms.”]]
+	-- alarm:stop()
 	think [[I open one eye and peer at the clock. It’s 5 am.]]
 	
 	local result = choice(
@@ -40,12 +46,14 @@ do
             "No, get up early."
     })
 	if result == 1 then
+		-- alarm:destroy() -- We don't need it after this point and it's done playing
 		goto MoreSleep
 	elseif result == 2 then
+		-- alarm:destroy() -- We don't need it after this point and it's done playing
 		goto LessSleep
     end
 end
-		  
+
 ::MoreSleep::
 do
     scene.bg "bgs/bedroom"
