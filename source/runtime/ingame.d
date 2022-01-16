@@ -3,9 +3,101 @@ import runtime.scripting;
 import runtime.elements;
 import engine;
 
-public {
+private {
+    float transitionBG = 1;
+    Texture kmChangeToBackground;
     Texture kmBackground;
+    void kmUpdateBG() {
+        if (transitionBG < 1) {
+            transitionBG += 0.025f;
+
+            if (transitionBG >= 1) {
+                kmBackground = kmChangeToBackground;
+                transitionBG = 1;
+            }
+        }
+    }
+
+    void kmDrawBG() {
+        if (kmBackground) {
+            GameBatch.draw(
+                kmBackground, 
+                vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()),
+                vec4.init,
+                vec2(0),
+                0,
+                SpriteFlip.None,
+                vec4(1, 1, 1, 1-transitionBG)
+            );
+        }
+
+        if (kmChangeToBackground) {
+            GameBatch.draw(
+                kmChangeToBackground, 
+                vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()),
+                vec4.init,
+                vec2(0),
+                0,
+                SpriteFlip.None,
+                vec4(1, 1, 1, transitionBG)
+            );
+        }
+        GameBatch.flush();
+    }
+
+    float transitionCG = 1;
+    Texture kmChangeToCG;
     Texture kmActiveCG;
+    void kmUpdateCG() {
+        if (transitionCG < 1) {
+            transitionCG += 0.025f;
+
+            if (transitionCG >= 1) {
+                kmActiveCG = kmChangeToCG;
+                transitionCG = 1;
+            }
+        }
+    }
+
+    void kmDrawCG() {
+        if (kmActiveCG) {
+            GameBatch.draw(
+                kmActiveCG, 
+                vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()),
+                vec4.init,
+                vec2(0),
+                0,
+                SpriteFlip.None,
+                vec4(1, 1, 1, 1-transitionCG)
+            );
+        }
+
+        if (kmChangeToCG) {
+            GameBatch.draw(
+                kmChangeToCG, 
+                vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()),
+                vec4.init,
+                vec2(0),
+                0,
+                SpriteFlip.None,
+                vec4(1, 1, 1, transitionCG)
+            );
+        }
+        GameBatch.flush();
+    }
+}
+
+public {
+    void kmChangeBG(Texture toBG) {
+        transitionBG = 0;
+        kmChangeToBackground = toBG;
+    }
+
+    void kmChangeCG(Texture toCG) {
+        transitionCG = 0;
+        kmChangeToBackground = toCG;
+    }
+
     DialogueRenderer kmText;
 
     bool hideTextbox;
@@ -70,6 +162,8 @@ public:
         }
 
         kmText.update();
+        kmUpdateBG();
+        kmUpdateCG();
 
         lastState = currState;
     }
@@ -79,57 +173,50 @@ public:
     */
     override
     void draw() {
-        if (kmActiveCG) {
-            GameBatch.draw(kmActiveCG, vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()));
-            GameBatch.flush();
-        } else {
-            if (kmBackground) {
-                GameBatch.draw(kmBackground, vec4(0, 0, kmCameraViewWidth(), kmCameraViewHeight()));
-                GameBatch.flush();
+        kmDrawBG();
+        if (kmActiveCG || kmChangeToCG) kmDrawCG();
+
+        foreach(key, character; kmCharacters) {
+            // Skip non-visible characters
+            if (character.expressions.length == 0) continue;
+
+            if (!character.shown) {
+                if (character.alpha > 0) kmCharacters[key].alpha = clamp(character.alpha-VISIBLE_ANIM_SPEED, 0, 1);
+                if (character.alpha == 0) continue;
+            } else {
+                if (character.alpha < 1) kmCharacters[key].alpha = clamp(character.alpha+VISIBLE_ANIM_SPEED, 0, 1);
             }
-        
-            foreach(key, character; kmCharacters) {
-                // Skip non-visible characters
-                if (character.expressions.length == 0) continue;
 
-                if (!character.shown) {
-                    if (character.alpha > 0) kmCharacters[key].alpha = clamp(character.alpha-VISIBLE_ANIM_SPEED, 0, 1);
-                    if (character.alpha == 0) continue;
-                } else {
-                    if (character.alpha < 1) kmCharacters[key].alpha = clamp(character.alpha+VISIBLE_ANIM_SPEED, 0, 1);
-                }
-
-                auto area = GameAtlas[character.currentTexture].area;
-                auto size = vec2(area.z/2, area.w/2);
-                
-                float pos = 128;
-                switch(character.position) {
-                    case 0:
-                        pos = 128;
-                        break;
-                    case 1:
-                        pos = kmCameraViewWidth/2;
-                        break;
-                    case 2:
-                        pos = kmCameraViewWidth-128;
-                        break;
-                    default: pos = kmCameraViewWidth/2; break;
-                }
-
-                GameBatch.draw(character.currentTexture, vec4(
-                        pos,
-                        (kmCameraViewHeight+128)-character.yOffset,
-                        size.x/2, size.y/2
-                    ), 
-                    vec4.init, 
-                    vec2(size.x/4, size.y/2), 
-                    0, 
-                    SpriteFlip.None, 
-                    vec4(1, 1, 1, character.alpha)
-                );
+            auto area = GameAtlas[character.currentTexture].area;
+            auto size = vec2(area.z/2, area.w/2);
+            
+            float pos = 128;
+            switch(character.position) {
+                case 0:
+                    pos = 128;
+                    break;
+                case 1:
+                    pos = kmCameraViewWidth/2;
+                    break;
+                case 2:
+                    pos = kmCameraViewWidth-128;
+                    break;
+                default: pos = kmCameraViewWidth/2; break;
             }
-            GameBatch.flush();
+
+            GameBatch.draw(character.currentTexture, vec4(
+                    pos,
+                    (kmCameraViewHeight+128)-character.yOffset,
+                    size.x/2, size.y/2
+                ), 
+                vec4.init, 
+                vec2(size.x/4, size.y/2), 
+                0, 
+                SpriteFlip.None, 
+                vec4(1, 1, 1, character.alpha)
+            );
         }
+        GameBatch.flush();
 
         // Textbox
         if (!hideTextbox) {

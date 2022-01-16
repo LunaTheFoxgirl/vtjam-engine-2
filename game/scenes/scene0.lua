@@ -2,6 +2,16 @@
     -- Starts with a black screen and slowly transitions to Bedroom.Dawn
     scene.bg ""
 
+	-- Apology for the state of the game lol
+	think 	"-- This is a game made for VTGameJam2022 --\n\z
+			This was made under the time constraint of 48 hours\n\z
+			With a custom built engine made from scratch.\n\z
+			Parts of the story are probably missing" --
+	think	"Sorry about that. I hope you will enjoy this taste\n\z
+			Of what we wanted to make nontheless\n\z
+			- Luna and Nethyr_UX"
+	think "..."	 
+
 	think   "At a certain age, young boys and girls prepare for a special event:\n\z
             the High School Gala.\n\z
             It’s a Coming of Age Ceremony... of getting lit af!!!\n\z
@@ -15,11 +25,12 @@
 
 ::Scene1::
 do
-    scene.bg "bgs/bedroom"
+    -- scene.bg "bgs/bedroom"
 	-- Starts with Alarm SFX
 	
 	freja:show()
-	
+	freja:move(1)
+
 	freja [["MMm... I hate alarms.”]]
 	think [[I open one eye and peer at the clock. It’s 5 am.]]
 	
@@ -37,7 +48,11 @@ end
 		  
 ::MoreSleep::
 do
+    scene.bg "bgs/bedroom"
 	freja   [["Mmm....too early."]]
+
+	scene.bg "" -- TODO: CG here?
+	freja:hide()
 	think   "I shut my eyes tightly and flump my pillow over my ears.\n\z
 		    Naps are the best…I slowly nod off and find myself in a dream."
 	
@@ -54,6 +69,8 @@ do
 	think   "Her smile disappears and just looks away\n\z
             from her dad as his shadow grows over her."
 	
+	scene.bg "bgs/bedroom"
+	freja:show()
 	freja:expr "shocked"
 	think   "I wake up from my bed in a cold sweat and turn to the clock. It’s 7 am.§p\n\z
             Shit.§p§p I quickly change clothes and run downstairs."
@@ -62,8 +79,9 @@ do
     freja:expr "neutral"
 	mom     [["Freja! You're going to be late again!"]]
 	
+	scene.bg "bgs/livingroom" -- Switching to livingroom
 	freja   [["I know! I know!!"]]
-	freja   [[I take a piece of bread from the kitch counter and put it in my mouth.]]
+	think   [[I take a piece of bread from the kitch counter and put it in my mouth.]]
 	
 	mom     [["Make sure to get a big lunch, sunflower! Oh and find a date for the Gala!!"]]
 	
@@ -71,23 +89,28 @@ do
 	
 	freja   [["Uh, sure, Ma! Cya later"]]
 	
-	freja   "I slip on my sneakers and run off. The school is a few blocks away, but there's an annoying hil.\n\z
+	scene.bg "bgs/park_day"
+	think   "I slip on my sneakers and run off. The school is a few blocks away, but there's an annoying hil.\n\z
 			There's probably no traffic so I should be ok..."
 	
-	freja   [[I turn around a few corridors and up ahead is the last turn.]]
+	think   [[I turn around a few corridors and up ahead is the last turn.]]
 	
-	freja   [[ I'M ALMOST THERE!!]]
+	freja   [[I'M ALMOST THERE!!]]
 	
-	freja   [[My sneakers squeak as I turn and then---]]
+	think   [[My sneakers squeak as I turn and then---]]
 	
+	scene.bg ""
+	freja:hide()
 	think   [[I black out a bit and my head hurts.]]
 	
 	mathilde    [["Oh jeez..."]]
+	freja:show()
     mathilde:show()
     mathilde:move(2) -- She's to the right of us
+	scene.bg "bgs/school_day"
 
-	freja   [[I open my eyes and see a familiar red figure on the ground - an older version of the girl I saw in my dream,  Mathilde.]]
-	freja   [[She's rubbing her head and my bread is stuck on her shirt.]]
+	think   [[I open my eyes and see a familiar red figure on the ground - an older version of the girl I saw in my dream,  Mathilde.]]
+	think   [[She's rubbing her head and my bread is stuck on her shirt.]]
 	
 	freja   [["S-Sorry, Mathilde!!"]]
 	
@@ -112,7 +135,7 @@ do
 	freja [[She's really kind when she wants to be - other times...she's a bit more aloof.]]
 	
 	--scene change to nurse's office
-	
+	scene.bg "bgs/lab" -- TODO: Find a better background
 	freja [[We finally arrive at the nurse's office and the nurse opens the door.]]
 	
 	nurse [["Oh hello, Mathilde! Who's this behind you?"]]
@@ -142,5 +165,65 @@ end
 	
 ::LessSleep::
 do
-    freja "I should really get up"
+    freja 	[["Well... I like to see the sunrise. It'd be nice."]]
+
+	scene.bg "bgs/bedroom"
+	think 	"I throw my blanket off, jump out of bed and head to the restroom.\n\z
+			My hair is a bit of a mess but managable - a quick shower\n\z
+			should help."
+	
+	think	"I go ahead and takea quick shower - daydreaming a bit."
+	think	"§pNow that I think about it, Karla would be up this early too.\n\z
+			She's a cool friend of mine and is always on top of her game."
+	think	"She recently got in to a renowned university, while me§p.§p.§p.§p?\n\z
+			I'm just going to community college. I still wonder to this day:\n\z
+			why are we still friends?"
+
+	think 	"I turn off the shower head, dry up, put on some clothes & my\n\z
+			favourite leather jacket and head downstairs."
+
+	scene.bg "bgs/livingroom"
+	think	"Ma is already making breakfast - it smells like bacon-wrapped\n\z
+			turkey sausages."
+
+	freja	[["G'morning, Ma."]]
+	mom		"\"Ah! You're up early for once! Good morning, Freja.\n\z
+			How's my little sunflower?\""
+	freja	[["I'm doing alright."]]
+	mom		[["Oh? Did you get a date yet for the Gala?"]]
+
+	think	"I groan§p§p - §wright§w§p§p§p, that event is comming up.\n\z
+			It's a special coming of age ceremony that initiates\n\z
+			us into adulthood. Don't care much for it myself."
+	freja	"...No."
+
+	mom		[["Well, you better soon! It's the best time to find a life partner!"]]
+	think	"My mother and many of t he elders in the town believe that your\n\z
+			Gala partner is your fated one for life...\n\z
+			I just think it's unnecessary. Karla would think so too."
+	think 	"She would say that careers are more important than love."
+
+	think	"I take a fork and stab a couple of bacon-wrapped sausages."
+	mom		[["You don't need to kill the sausages, dear."]]
+	think	"I bite them off the fork and roll my eyes."
+	freja	[["Well, they're already dead."]]
+	mom		[["Freja, you know what I mean..."]]
+
+	think 	"I finish the rest of my breakfast and puck up my bag."
+	freja	[["...I know. See you later, okay? Thanks, Ma."]]
+	think	"Ma smiles sweetly and waves as I exit the house."
+
+	scene.bg "bgs/park_day"
+	think	"The school is only a few blocks away and with a hill in the way.\n\z
+			But occasionally I like to take the scenic route through the park."
+	
+	-- TODO: transscribe the wall of text
+
+	think "But now that I think about it,§p§p§p why did she make a sunflower?"
+	think "My ears twitch - I hear footsteps approaching and I turn around-"
+
+	freja:move(0)
+	karla:show()
+	karla:move(2)
+	think "I see a blue-haired cat, speak of the devil. It's Karla."
 end

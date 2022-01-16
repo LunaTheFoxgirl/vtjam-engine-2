@@ -85,19 +85,64 @@ void kmVNRegisterCharacterAPI() {
 void kmVNRegisterSceneAPI() {
     kmLuaState.register!(
         "bg", (string bg) {
-            kmBackground = bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg);
+            kmChangeBG(bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg));
         },
         "cg", (string cg) {
-            kmActiveCG = new Texture(kmPakGetResource(cg), cg);
+            kmChangeCG(new Texture(kmPakGetResource(cg), cg));
         },
         "popcg", () {
-            kmActiveCG = null;
+            kmChangeCG(null);
         },
         "change", (LuaState* state, string scene) {
             kmSwitchScene(scene.idup);
             kmLuaYield(state);
         }
     )("scene");
+}
+
+void kmVNRegisterAudioAPI() {
+    kmLuaState.push((LuaState* state, string sfx) {
+        
+        // Load sound if need be
+        if (sfx !in kmLoadedSFX) kmLoadedSFX[sfx] = new Sound(kmPakGetResource(bgm));
+
+        auto t = LuaTable.makeNew();
+        t["sfxId"] = sfx;
+        t["looping"] = false;
+
+        t["play"] = (LuaState* state, LuaTable table) {
+            kmLoadedSFX[table.get!string("sfxId")].setLooping(table.get!string("looping"));
+            kmLoadedSFX[table.get!string("sfxId")].play();
+        };
+
+        t["stop"] = (LuaState* state, LuaTable table) {
+            kmLoadedSFX[table.get!string("sfxId")].stop();
+        };
+
+        t["destroy"] = (LuaState* state, LuaTable table) {
+
+            // Remove it from the engine
+            kmLoadedSFX.remove(table.get!string("sfxId"));
+            
+            // Destroy our sound effect in Lua
+            table.push();
+            state.push(null);
+            state.rawSet(-2);
+        };
+        return t;
+    });
+    kmLuaState.setGlobal("loadSFX");
+
+    kmLuaState.push((LuaState* state, string bgm) {
+        if (kmPlayingMusic) kmPlayingMusic.stop();
+        if (bgm.length > 0) {
+            kmPlayingMusic = new Music(kmPakGetResource(bgm));
+            kmPlayingMusic.setLooping(true);
+            kmPlayingMusic.play();
+        } else kmPlayingMusic = null;
+        return t;
+    });
+    kmLuaState.setGlobal("setBGM");
 }
 
 void kmVNRegisterBootstrap() {

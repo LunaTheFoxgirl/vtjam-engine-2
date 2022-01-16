@@ -92,6 +92,13 @@ public:
     }
 
     /**
+        Sets whether the sound loops
+    */
+    void setLooping(bool value) {
+        alSourcei(sourceId, AL_LOOPING, cast(int)value);
+    }
+
+    /**
         Sets the gain for the sound
     */
     void setGain(float gain) {

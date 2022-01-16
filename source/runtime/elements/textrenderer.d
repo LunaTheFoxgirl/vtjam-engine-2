@@ -30,6 +30,9 @@ public:
     void pushQuestions(string dialogue, string[] questions) {
         this.currentString = kmToEngineString(dialogue);
         this.speaker = "";
+        done = false;
+        index = 0;
+        
         foreach(question; questions) {
             this.questions ~= kmToEngineString(question);
         } 
