@@ -27,10 +27,10 @@ private {
 void kmPakInit() {
 
     // Make sure kmpack folder exists
-    if (!exists("kmpack")) mkdir("kmpack");
+    if (!exists("kmpak")) mkdir("kmpak");
 
     // Iterate over entries
-    foreach(DirEntry entry; dirEntries("kmpack", "*.pak", SpanMode.breadth, false)) {
+    foreach(DirEntry entry; dirEntries("kmpak", "*.pak", SpanMode.breadth, false)) {
         
         // Skip directories and symbolic links,
         // they're technically both files, but not PAK files.

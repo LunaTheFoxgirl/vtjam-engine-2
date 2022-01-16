@@ -1,39 +1,34 @@
 module runtime;
 import engine;
 import engine.ver;
+import runtime.scripting;
 import std.format;
+import runtime.ingame;
 
-enum NOT_FOUND_MSG = "Game content not found!\nMake sure the runtime executable is in the game directory, or\nrun with the --editor flag to enter the game editor.";
-Music music;
+enum NOT_FOUND_MSG = "Game content not found!\nMake sure the runtime executable is in the game directory.";
 
 /**
     Initialize game
 */
 void _init(string[] args) {
     GameWindow.setSwapInterval(SwapInterval.VSync);
-    GameWindow.title = "Kitsunemimi Runtime (No Game Loaded)";
-
-
+    GameWindow.title = "VTGameJam2022 Game";
 
     if (kmPakGetCount() <= 0) {
-        if (args.length > 0) {
-            music = new Music(args[0]);
-            music.setLooping(true);
-            music.play();
-        }
-
-        // No game content found to load.
-        AppLog.error("Runtime", "No game content found.");
+        AppLog.error("Runtime", "No game content found!");
         throw new Exception(NOT_FOUND_MSG);
     }
 
+    kmLuaInit();
+    GameStateManager.push(new InGameState());
 }
 
 /**
     Update game
 */
 void _update() {
-
+    GameStateManager.update();
+    GameStateManager.draw();
 }
 
 /**

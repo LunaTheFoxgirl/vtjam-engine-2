@@ -34,6 +34,3 @@ source/engine/ver.d
 
 # No thanks, imgui
 imgui.ini
-
-# Ignore package dir
-kmpack
