@@ -28,7 +28,7 @@ public:
     }
 
     size_t accum;
-    size_t accumWait = 5;
+    size_t accumWait = 4;
     void update() {
         if (currentString.length == 0) return;
 
@@ -144,7 +144,7 @@ public:
         }
 
         if (speaker.length > 0) {
-            GameFont.draw!true(speaker, vec2(position.x-8, position.y-28));
+            GameFont.draw!true(speaker, vec2(position.x-16, position.y-28));
         }
 
         GameFont.flush();

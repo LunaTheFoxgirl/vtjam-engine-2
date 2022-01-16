@@ -104,6 +104,6 @@ public:
         enum TextboxHeight = (20*5)+16;
         GameBatch.draw("ui/speechbox", vec4(64, kmCameraViewHeight-TextboxHeight-32, GameAtlas["ui/speechbox"].area.z, GameAtlas["ui/speechbox"].area.w));
         GameBatch.flush();
-        //kmText.draw(vec2(32, kmCameraViewHeight-TextboxHeight));
+        kmText.draw(vec2(96, kmCameraViewHeight-TextboxHeight));
     }
 }
