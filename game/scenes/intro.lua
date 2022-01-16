@@ -165,10 +165,12 @@ do
             "\"Ah, you don't have to! But thank you anyways!\""
     })
 	if result == 1 then
-		scene.change "(Chapter 2.Mathilde)"
+		scene.change "chapter2_mathilde"
 	elseif result == 2 then
-		scene.change ""
-    end
+		-- scene.change ""
+		think "TODO: Implement this route"
+		exit()
+	end
 end
 	
 ::LessSleep::
@@ -234,4 +236,7 @@ do
 	karla:show()
 	karla:move(2)
 	think "I see a blue-haired cat, speak of the devil. It's Karla."
+	
+	think "TODO: Implement this route"
+	exit()
 end
