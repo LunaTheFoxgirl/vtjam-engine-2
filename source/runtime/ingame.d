@@ -25,6 +25,8 @@ public:
 
         lastState = new KeyboardState;
         currState = new KeyboardState;
+
+        GameAtlas.add("ui/speechbox", ShallowTexture(kmPakGetResource("ui/speechbox"), "ui/speechbox"));
     }
 
     /**
@@ -41,6 +43,12 @@ public:
 
             if (!kmText.isDone) kmText.skip();
             else kmLuaResume(kmLuaScene);
+        }
+        
+        foreach(key, _; kmCharacters) {
+            if (kmCharacters[key].yOffset > 0) {
+                kmCharacters[key].yOffset -= 0.5f;
+            }
         }
 
         kmText.update();
@@ -84,7 +92,7 @@ public:
 
                 GameBatch.draw(character.currentTexture, vec4(
                     pos,
-                    kmCameraViewHeight+128,
+                    (kmCameraViewHeight+128)-character.yOffset,
                     size.x/2, size.y/2
                 ), vec4.init, vec2(size.x/4, size.y/2));
             }
@@ -94,6 +102,8 @@ public:
         // Textbox
 
         enum TextboxHeight = (20*5)+16;
-        kmText.draw(vec2(32, kmCameraViewHeight-TextboxHeight));
+        GameBatch.draw("ui/speechbox", vec4(64, kmCameraViewHeight-TextboxHeight-32, GameAtlas["ui/speechbox"].area.z, GameAtlas["ui/speechbox"].area.w));
+        GameBatch.flush();
+        //kmText.draw(vec2(32, kmCameraViewHeight-TextboxHeight));
     }
 }

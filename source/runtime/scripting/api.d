@@ -43,9 +43,14 @@ void kmVNRegisterCharacterAPI() {
                 kmCharacters[table.get!string("name")].expressions[expression];
         };
 
+        t["jump"] = (LuaTable table, float height) { 
+            kmCharacters[table.get!string("name")].yOffset = height;
+        };
+
         auto mt = LuaTable.makeNew(kmLuaState);
         mt["__call"] = (LuaState* state, LuaTable table, string dialogue) {
             kmText.push(table.get!string("name"), dialogue);
+            kmCharacters[table.get!string("name")].yOffset = 8f;
             kmLuaYield(state);
         };
         t.setMetatable(mt);

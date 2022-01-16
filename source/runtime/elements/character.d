@@ -31,4 +31,9 @@ public:
         Onscreen position
     */
     int position;
+
+    /**
+        Offset to apply when someone is talking
+    */
+    float yOffset;
 }

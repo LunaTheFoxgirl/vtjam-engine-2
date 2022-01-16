@@ -200,7 +200,7 @@ public:
 
         // If cutout has not been set (all values are NaN or infinity) we set it to use the entire texture
         if (!cutout.isFinite) {
-            cutout = vec4(0, fbo.realHeight, fbo.realWidth, -fbo.realHeight);
+            cutout = vec4(0, fbo.realHeight, fbo.realWidth, -(fbo.realHeight-1));
         }
 
         vec4 uvArea = vec4(
