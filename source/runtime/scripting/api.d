@@ -95,6 +95,21 @@ void kmVNRegisterSceneAPI() {
     )("scene");
 }
 
+bool[string] kmFlags;
+void kmVNRegisterFlagsAPI() {
+    kmLuaState.register!(
+        "set", (string flag) {
+            kmFlags[flag] = true;
+        },
+        "unset", (string flag) {
+            kmFlags[flag] = false;
+        },
+        "hasflag", (string flag) {
+            return (flag in kmFlags) !is null ? kmFlags[flag] : false;
+        },
+    )("flags");
+}
+
 void kmVNRegisterUtilsAPI() {
     kmLuaState.push((LuaState* state) {
         kmLuaYield(state);

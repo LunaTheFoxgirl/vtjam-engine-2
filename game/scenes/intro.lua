@@ -7,6 +7,9 @@
 			This was made under the time constraint of 48 hours\n\z
 			With a custom built engine made from scratch.\n\z
 			Parts of the story are probably missing" --
+	think	"Free stock backgrounds are provided by\n\z
+			- Noraneko Games\n\z
+			- MUGEN's Free VN Resources."
 	think	"Sorry about that. I hope you will enjoy this taste\n\z
 			Of what we wanted to make nontheless\n\z
 			- Luna and Nethyr_UX"
@@ -236,7 +239,7 @@ do
 	karla:show()
 	karla:move(2)
 	think "I see a blue-haired cat, speak of the devil. It's Karla."
-	
+
 	think "TODO: Implement this route"
 	exit()
 end
