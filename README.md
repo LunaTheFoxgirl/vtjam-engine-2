@@ -11,6 +11,7 @@ The Kitsunemimi engine requires the following dependencies to be present to work
  * OpenGL Driver
  * SDL2 2.0.12 or above
  * FreeType
+ * Lua 5.2
  * Kosugi Maru Font (in [`res/fonts`](/res/fonts) w/ license)
  * PixelMPlus 10 Font (in [`res/fonts`](/res/fonts) w/ license)
 
