@@ -113,7 +113,7 @@ void kmVNRegisterSceneAPI() {
     kmLuaState.register!(
         "bg", (string bg) {
             try {
-                kmChangeBG(bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg));
+                kmChangeBG(bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg), bg);
             } catch (Exception ex) {
                 AppLog.error("SceneAPI->bg", ex.msg);
             }

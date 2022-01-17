@@ -7,6 +7,7 @@ private {
     float transitionBG = 1;
     Texture kmChangeToBackground;
     Texture kmBackground;
+    string kmActiveBGName;
     void kmUpdateBG() {
         if (transitionBG < 1) {
             transitionBG += 0.025f;
@@ -88,9 +89,12 @@ private {
 }
 
 public {
-    void kmChangeBG(Texture toBG) {
+    void kmChangeBG(Texture toBG, string name) {
+        if (kmActiveBGName == name) return; // No need to transition across backgrounds that are the same
+
         transitionBG = 0;
         kmChangeToBackground = toBG;
+        kmActiveBGName = name;
     }
 
     void kmChangeCG(Texture toCG) {

@@ -1,18 +1,23 @@
-::Introduction::
+::introduction::
     -- Starts with a black screen and slowly transitions to Bedroom.Dawn
     scene.bg ""
 
 	-- Apology for the state of the game lol
+	think	"Thank you for trying out our visual novel! \n\z
+			Here are the controls for the game: \n\z
+			SPACE: Advance Text, Skip, & Select."
+	think	"CTRL: Hide UI \n\z
+			UP/DOWN ARROW: Change Selection."
 	think 	"-- This is a game made for VTGameJam2022 --\n\z
 			This was made under the time constraint of 48 hours\n\z
 			With a custom built engine made from scratch.\n\z
 			Parts of the story are probably missing" --
+	think	"Sorry about that. I hope you will enjoy this taste\n\z
+			of what we wanted to make nontheless. (=^･ω･^=) \n\z
+			- Luna and Nethyr_UX "
 	think	"Free stock backgrounds are provided by\n\z
 			- Noraneko Games\n\z
 			- MUGEN's Free VN Resources."
-	think	"Sorry about that. I hope you will enjoy this taste\n\z
-			Of what we wanted to make nontheless\n\z
-			- Luna and Nethyr_UX"
 	think 	"..."	 
 
 	think   "At a certain age, young boys and girls prepare for a special event:\n\z
@@ -24,23 +29,20 @@
             As it is 3 weeks before said High School Gala.\n\z
             Her name is Freja, a young golden eyed puppy, and she is currently asleep."
 
-	goto Scene1
+	goto scene1
 
-::Scene1::
+::scene1::
 do
     -- scene.bg "bgs/bedroom"
 	-- Starts with Alarm SFX
 
-	-- load_sfx("sfx/alarm")
+	think "The alarm rings loudly throughout my bedroom."
 	
 	freja:show()
 	freja:move(1)
-
-	-- play_sfx("sfx/alarm", true)
 	freja [["MMm... I hate alarms.”]]
-	-- stop_sfx("sfx/alarm")
-	-- unload_sfx("sfx/alarm")
 	think [[I open one eye and peer at the clock. It’s 5 am.]]
+	--loads sfx,plays sfx, stops sfx, unload sfx example
 	
 	local result = choice(
         "Should I get more shut eye...? It's just Monday.", {
@@ -100,8 +102,8 @@ do
 	freja   [["Uh, sure, Ma! Cya later"]]
 	
 	scene.bg "bgs/park_day"
-	think   "I slip on my sneakers and run off. The school is a few blocks away, but there's an annoying hil.\n\z
-			There's probably no traffic so I should be ok..."
+	think   "I slip on my sneakers and run off. The school is a few blocks away,\n\z 
+			but there's an annoying hill. There's probably no traffic so I should be ok..."
 	
 	think   [[I turn around a few corridors and up ahead is the last turn.]]
 	
@@ -115,16 +117,18 @@ do
 	
 	mathilde    [["Oh jeez..."]]
 	freja:show()
+	freja:move(0)
     mathilde:show()
     mathilde:move(2) -- She's to the right of us
 	scene.bg "bgs/school_day"
 
-	think   [[I open my eyes and see a familiar red figure on the ground - an older version of the girl I saw in my dream,  Mathilde.]]
+	think   "I open my eyes and see a familiar red figure on the ground - \n\z
+				an older version of the girl I saw in my dream,  Mathilde."
 	think   [[She's rubbing her head and my bread is stuck on her shirt.]]
 	
 	freja   [["S-Sorry, Mathilde!!"]]
 	
-	freja   [[I quickly get up and hold out my hand. She looks up and laughs before taking it.]]
+	think   [[I quickly get up and hold out my hand. She looks up and laughs before taking it.]]
 	
 	mathilde [["Pfft, I didn't expect to see you this late!"]]
 	
@@ -132,46 +136,46 @@ do
 	
 	mathilde [["Actually...same here. I had a weird dream..."]]
 	
-	freja   [[She then stares blankly at me and covers her mouth in shock.]]
+	think   [[She then stares blankly at me and covers her mouth in shock.]]
 	
 	mathilde [["Your nose is bleeding!! You need to go to the nurse's office!!"]]
 	
-	freja   [[Mathilde grabs my hand firmly and drags me to school. I try my best to cover my nose but the blood keeps flowing out.]]
+	think   "Mathilde grabs my hand firmly and drags me to school. \n\z 
+			I try my best to cover my nose but the blood keeps flowing out."
 
     -- transition to corridor
     scene.bg "bgs/corridor"
-	freja "By the time we arrived at the nurse's office, the first period class ended and the students are moving to their next classrooms.\n\z
+	think 	"By the time we arrived at the nurse's office, the first period class ended \n\z
+			and the students are moving to their next classrooms.\n\z
 			It was quite crowded, but Mathilde keeps me close to her."
-	freja [[She's really kind when she wants to be - other times...she's a bit more aloof.]]
+	think [[She's really kind when she wants to be - other times...she's a bit more aloof.]]
 	
 	--scene change to nurse's office
 	scene.bg "bgs/lab" -- TODO: Find a better background
-	freja [[We finally arrive at the nurse's office and the nurse opens the door.]]
+	think [[We finally arrive at the nurse's office and the nurse opens the door.]]
 	
 	nurse [["Oh hello, Mathilde! Who's this behind you?"]]
 	
 	mathilde "Ah, this is Freja. I accidentally bumped into her and her nose is bleeding..."
-	mathilde [[She quickly passes the nurse, grabs some tissues, and hands them to me.]]
+	think    [[She quickly passes the nurse, grabs some tissues, and hands them to me.]]
 	
 	nurse [["Oh dear, well she can rest here!"]]
 	
 	mathilde [["Great!"]]
 	
-	freja [[Mathilde turns to me and says...]]
+	think [[Mathilde turns towards me,]]
 	
 	mathilde [["Just rest here and I'll come back to see you, ok?"]]
 	
 	local result = choice(
         "What should I say?", {
             "\"Alright, I'll see you later...and thanks, Mathilde.\"", 
-            "\"Ah, you don't have to! But thank you anyways!\""
+            "\"Wait, could you stay with me for a bit?\""
     })
 	if result == 1 then
-		scene.change "chapter2_mathilde"
+		scene.change "chapter1a_mathilde"
 	elseif result == 2 then
-		-- scene.change ""
-		think "TODO: Implement this route"
-		exit()
+		scene.change "chapter1b_mathilde"
 	end
 end
 	
@@ -221,15 +225,26 @@ do
 	freja	[["Well, they're already dead."]]
 	mom		[["Freja, you know what I mean..."]]
 
-	think 	"I finish the rest of my breakfast and puck up my bag."
+	think 	"I finish the rest of my breakfast and pack up my bag."
 	freja	[["...I know. See you later, okay? Thanks, Ma."]]
 	think	"Ma smiles sweetly and waves as I exit the house."
 
 	scene.bg "bgs/park_day"
 	think	"The school is only a few blocks away and with a hill in the way.\n\z
 			But occasionally I like to take the scenic route through the park."
-	
-	-- TODO: transscribe the wall of text
+			
+	think	"There's a cute garden with funny sculptures made by the kids \n\z
+			around here. Every year, they would display a new one from the \n\z
+			local neighborhood competition."
+			
+	think	"There's the frog-skipping one, the bird one, and Karla's - \n\z
+			a sunflower."
+			
+	think	"We've both been here since we were young so we're longtime rivals. \n\z
+			I remember trying so hard to make my sculpture but hers was too good."
+			
+	think	"You can even see the individual seeds in the flower. I cried	\n\z
+			when I lost and Karla was so confused. Ma had to comfort me a lot..."
 
 	think "But now that I think about it,§p§p§p why did she make a sunflower?"
 	think "My ears twitch - I hear footsteps approaching and I turn around-"
@@ -239,6 +254,15 @@ do
 	karla:move(2)
 	think "I see a blue-haired cat, speak of the devil. It's Karla."
 
-	think "TODO: Implement this route"
-	exit()
+	
+	local result = choice(
+        "What should I do?", {
+            "Hide in the bushes.", 
+            "Wave at Karla"
+    })
+	if result == 1 then
+		scene.change "chapter1a_karla"
+	elseif result == 2 then
+		scene.change "chapter1b_karla"
+	end
 end
