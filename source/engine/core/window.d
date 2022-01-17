@@ -90,7 +90,7 @@ public:
         Sets the title of the window
     */
     @property void title(string value) {
-        this.title_ = value;
+        this.title_ = value.idup~"\0";
         SDL_SetWindowTitle(window, this.title_.ptr);
     }
 

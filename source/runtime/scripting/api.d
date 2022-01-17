@@ -28,25 +28,45 @@ void kmVNRegisterCharacterAPI() {
         t["expressions"] = expressions;
         t["name"] = name;
         t["hide"] = (LuaTable table) {
-            kmCharacters[table.get!string("name")].shown = false;
+            try {
+                kmCharacters[table.get!string("name")].shown = false;
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->hide", ex.msg);
+            }
         };
 
         t["show"] = (LuaTable table) {
-            kmCharacters[table.get!string("name")].shown = true;
+            try {
+                kmCharacters[table.get!string("name")].shown = true;
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->show", ex.msg);
+            }
         };
 
         t["destroy"] = (LuaTable table) {
-            kmCharacters.remove(table.get!string("name"));
+            try {
+                kmCharacters.remove(table.get!string("name"));
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->destroy", ex.msg);
+            }
         };
 
         t["move"] = (LuaTable table, int position) {
-            kmCharacters[table.get!string("name")].position = position;
+            try {
+                kmCharacters[table.get!string("name")].position = position;
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->move", ex.msg);
+            }
         };
 
         t["expr"] = (LuaTable table, string expression) {
-            kmCharacters[table.get!string("name")].currentTexture =
-                kmCharacters[table.get!string("name")].expressions[expression];
-            kmCharacters[table.get!string("name")].yOffset = 8f;
+            try {
+                kmCharacters[table.get!string("name")].currentTexture =
+                    kmCharacters[table.get!string("name")].expressions[expression];
+                kmCharacters[table.get!string("name")].yOffset = 8f;
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->expr", ex.msg);
+            }
         };
 
         t["jump"] = (LuaTable table, float height) { 
@@ -55,9 +75,13 @@ void kmVNRegisterCharacterAPI() {
 
         auto mt = LuaTable.makeNew(kmLuaState);
         mt["__call"] = (LuaState* state, LuaTable table, string dialogue) {
-            kmText.push(table.get!string("name"), dialogue);
-            kmCharacters[table.get!string("name")].yOffset = 8f;
-            kmLuaYield(state);
+            try {
+                kmText.push(table.get!string("name"), dialogue);
+                kmCharacters[table.get!string("name")].yOffset = 8f;
+                kmLuaYield(state);
+            } catch (Exception ex) {
+                AppLog.error(table.get!string("name")~"->__call", ex.msg);
+            }
         };
         t.setMetatable(mt);
         return t;
@@ -65,14 +89,22 @@ void kmVNRegisterCharacterAPI() {
     kmLuaState.setGlobal("define");
 
     kmLuaState.push((LuaState* state, string dialogue) {
-        kmText.push("", dialogue);
-        kmLuaYield(state);
+        try {
+            kmText.push("", dialogue);
+            kmLuaYield(state);
+        } catch (Exception ex) {
+            AppLog.error("CharAPI->think", ex.msg);
+        }
     });
     kmLuaState.setGlobal("think");
 
     kmLuaState.push((LuaState* state, string dialogue, string[] choices) {
-        kmText.pushQuestions(dialogue, choices);
-        kmLuaYield(state);
+        try {
+            kmText.pushQuestions(dialogue, choices);
+            kmLuaYield(state);
+        } catch (Exception ex) {
+            AppLog.error("CharAPI->choice", ex.msg);
+        }
     });
     kmLuaState.setGlobal("choice");
 }
@@ -80,17 +112,33 @@ void kmVNRegisterCharacterAPI() {
 void kmVNRegisterSceneAPI() {
     kmLuaState.register!(
         "bg", (string bg) {
-            kmChangeBG(bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg));
+            try {
+                kmChangeBG(bg.length == 0 ? null : new Texture(kmPakGetResource(bg), bg));
+            } catch (Exception ex) {
+                AppLog.error("SceneAPI->bg", ex.msg);
+            }
         },
         "cg", (string cg) {
-            kmChangeCG(new Texture(kmPakGetResource(cg), cg));
+            try {
+                kmChangeCG(new Texture(kmPakGetResource(cg), cg));
+            } catch (Exception ex) {
+                AppLog.error("SceneAPI->cg", ex.msg);
+            }
         },
         "popcg", () {
-            kmChangeCG(null);
+            try {
+                kmChangeCG(null);
+            } catch (Exception ex) {
+                AppLog.error("SceneAPI->popcg", ex.msg);
+            }
         },
         "change", (LuaState* state, string scene) {
-            kmSwitchScene(scene.idup);
-            kmLuaYield(state);
+            try {
+                kmSwitchScene(scene.idup);
+                kmLuaYield(state);
+            } catch (Exception ex) {
+                AppLog.error("SceneAPI->change", ex.msg);
+            }
         }
     )("scene");
 }
