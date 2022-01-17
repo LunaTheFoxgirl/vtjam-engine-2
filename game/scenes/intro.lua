@@ -31,16 +31,15 @@ do
     -- scene.bg "bgs/bedroom"
 	-- Starts with Alarm SFX
 
-	-- TODO: Add sound effect in to game/sfx/alarm and uncomment alarm playback code.
-	-- local alarm = loadSFX("sfx/alarm")
-	-- alarm.looping = true
+	-- load_sfx("sfx/alarm")
 	
 	freja:show()
 	freja:move(1)
 
-	-- alarm:play()
+	-- play_sfx("sfx/alarm", true)
 	freja [["MMm... I hate alarms.”]]
-	-- alarm:stop()
+	-- stop_sfx("sfx/alarm")
+	-- unload_sfx("sfx/alarm")
 	think [[I open one eye and peer at the clock. It’s 5 am.]]
 	
 	local result = choice(

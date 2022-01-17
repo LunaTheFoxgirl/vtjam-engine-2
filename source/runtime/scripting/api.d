@@ -116,41 +116,56 @@ void kmVNRegisterUtilsAPI() {
     });
     kmLuaState.setGlobal("yield");
 
+    kmLuaState.push((LuaState* state, string title) {
+        GameWindow.title = title;
+    });
+    kmLuaState.setGlobal("set_title");
+
     kmLuaState.push((LuaState* state) {
         // Exit the game
         GameWindow.close();
         kmLuaYield(state);
     });
     kmLuaState.setGlobal("exit");
+
+    // Create persistant storage
+    LuaTable t = LuaTable.makeNew(kmLuaState);
+    t.push();
+    kmLuaState.setGlobal("_STORE");
 }
 
 void kmVNRegisterAudioAPI() {
     kmLuaState.push((LuaState* state, string sfx) {
-        
+
         // Load sound if need be
-        if (sfx !in kmLoadedSFX) kmLoadedSFX[sfx] = new Sound(kmPakGetResource(sfx));
+        if (sfx !in kmLoadedSFX) {
+            try {
+                kmLoadedSFX[sfx] = new Sound(kmPakGetResource(sfx));
+            } catch (Exception ex) {
+                AppLog.error("AudioEngine", "%s: %s", sfx, ex.msg);
+            }
+        }
     });
-    kmLuaState.setGlobal("loadSFX");
+    kmLuaState.setGlobal("load_sfx");
 
     kmLuaState.push((LuaState* state, string sfx, bool looping) {
         
         kmLoadedSFX[sfx].setLooping(looping);
         kmLoadedSFX[sfx].play(0.65f);
     });
-    kmLuaState.setGlobal("playSFX");
+    kmLuaState.setGlobal("play_sfx");
 
     kmLuaState.push((LuaState* state, string sfx) {
-        
         kmLoadedSFX[sfx].stop();
     });
-    kmLuaState.setGlobal("stopSFX");
+    kmLuaState.setGlobal("stop_sfx");
 
     kmLuaState.push((LuaState* state, string sfx) {
         
         // Load sound if need be
         if (sfx in kmLoadedSFX) kmLoadedSFX.remove(sfx);
     });
-    kmLuaState.setGlobal("unloadSFX");
+    kmLuaState.setGlobal("unload_sfx");
 
     kmLuaState.push((LuaState* state, string bgm) {
         if (kmPlayingMusic) kmPlayingMusic.stop();
@@ -160,7 +175,7 @@ void kmVNRegisterAudioAPI() {
             kmPlayingMusic.play(0.5f);
         } else kmPlayingMusic = null;
     });
-    kmLuaState.setGlobal("setBGM");
+    kmLuaState.setGlobal("play_bgm");
 }
 
 void kmVNRegisterBootstrap() {

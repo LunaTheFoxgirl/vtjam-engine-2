@@ -58,6 +58,8 @@ void startGame(string[] args, vec2i viewportSize = vec2i(1920, 1080)) {
         currentTime_ = cast(double)SDL_GetPerformanceCounter()/cast(double)SDL_GetPerformanceFrequency();
         previousTime_ = currentTime_;
 
+        GameWindow.resize(viewportSize.x, viewportSize.y);
+
         framebuffer = new Framebuffer(GameWindow, viewportSize);
         while(!GameWindow.isExitRequested) {
 
